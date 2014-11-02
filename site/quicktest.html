@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Test rapide</title>
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
+		<script src="scripts/jquery-2.1.1.js"></script>
+	</head>
+
+	<body>
+	
+		<nav>
+			<a href="index.html">Accueil</a>
+			<a href="dashboard.html">Tableau de bord</a>
+			<a href="instructions.html">Instructions</a>
+		</nav>
+		
+		<section>
+		
+			<em id="nomDomaine"></em>
+
+			<h1 id="enonceQuestion"></h1>
+	
+			<form id="reponses" action="quicktest.html" method="post">
+				<article id="listeChoix"></article>
+				<input type="submit" value="Corriger" name="valider" class="valider" id="valider">
+			</form>
+
+			<a href="dashboard.html" class="abandonner">Retour au Menu</a>
+		
+		</section>
+		
+		<aside class="statistiques">
+			<h1>Note actuelle :</h1>
+			<p id="note"></p>
+		</aside>
+		
+		<footer>
+			Anaëlle Hamon - 1753299 - Edwin Bourget - 1754638
+		</footer>
+		
+		<script type="text/javascript" src="scripts/quicktest.js"></script>
+		<script type="text/javascript" src="scripts/gestionQuestions.js"></script>
+		<script type="text/javascript" src="scripts/baseDonnees.js"></script>
+	</body>
+</html>

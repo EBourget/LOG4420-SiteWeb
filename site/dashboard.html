@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Tableau de bord</title>
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
+		<link rel="stylesheet" type="text/css" href="styles/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="styles/jquery-ui.theme.css">
+		<link rel="stylesheet" type="text/css" href="styles/jquery-ui.structure.css">
+		<script src="scripts/jquery-2.1.1.js"></script>
+		<script src="scripts/jquery-ui.js"></script>
+	</head>
+
+	<body>
+
+		<nav>
+			<a href="index.html">Accueil</a>
+			<a class="current" href="dashboard.html">Tableau de bord</a>
+			<a href="instructions.html">Instructions</a>
+		</nav>
+		
+		<section>
+		
+			<article>
+				<h1>Test rapide</h1>
+				
+				<a href="quicktest.html" class="envoyer" id="formTest">Démarer le test</a>
+				
+			</article>
+			
+			<article>
+			
+				<h1>Examen officiel</h1>
+				
+				<form id="formExamen" method="POST" action="examen.html">
+					<div id="choixDomaines"></div>
+					<br>
+					<label for="nombre_questions">Nombre de questions : </label><input type="number" min="1" name="nombre_questions" id="nombre_questions" required>
+					<br><br>
+					<input type="submit" name="envoyer" value="Démarer l'examen" class="envoyer">
+				</form>
+				<div id="alerteSujet" class="ui-widget">
+					<div class="ui-state-error ui-corner-all">
+						<p>Veuillez sélectionner au moins un sujet.</p>
+					</div>
+				</div>
+				<div id="alerteQuestions" class="ui-widget">
+					<div class="ui-state-error ui-corner-all">
+						<p>Veuillez sélectionner au maximum <span id="maxQuestions"></span> questions pour les domaines choisis.</p>
+					</div>
+				</div>
+			</article>
+			
+		</section>
+		
+
+		<aside class="statistiques">
+		
+			<h1>Statistiques</h1>
+			
+			<ul>
+				<li>Pourcentage de tests réussis : <span id="pourcentageTestsReussis"></span></li>
+				<li>Moyenne aux examens : <span id="moyenneExamens"></span></li>
+				<li>Note du dernier examen : <span id="dernierExamen"></span></li>
+				<li>Nombre d'examens : <span id="nombreExamens"></span></li>
+			</ul>
+			
+			<a href="#details">Détails</a><br>
+			<a id="raz" href="">Remise à zéro</a>
+			
+		</aside>
+
+				
+		<div id="details">
+			<section>
+				<h1>Détails</h1>
+				
+				<p>Voici l'ensemble des résultats obtenus aux examens : </p>
+				<ul id="resultatsExamens"></ul>
+			</section>
+			<a class="retour" href="dashboard.html"></a>
+		</div>
+		
+		<footer>
+			Anaëlle Hamon - 1753299 - Edwin Bourget - 1754638
+		</footer>
+		<script type="text/javascript" src="scripts/gestionStorage.js"></script>
+		<script type="text/javascript" src="scripts/dashboard.js"></script>
+		<script type="text/javascript" src="scripts/baseDonnees.js"></script>
+	</body>
+	
+</html>
