@@ -4,13 +4,23 @@ html(lang='fr')
 		meta(charset='utf-8')
 		title= titre
 		link(rel='stylesheet', type='text/css', href='stylesheets/style.css')
-		link(rel='stylesheet', type='text/css', href='stylesheets/jquery-ui.css')
-		link(rel='stylesheet', type='text/css', href='stylesheets/jquery-ui.theme.css')
-		link(rel='stylesheet', type='text/css', href='stylesheets/jquery-ui.structure.css')
+		if dashboard
+			link(rel='stylesheet', type='text/css', href='stylesheets/jquery-ui.css')
+			link(rel='stylesheet', type='text/css', href='stylesheets/jquery-ui.theme.css')
+			link(rel='stylesheet', type='text/css', href='stylesheets/jquery-ui.structure.css')
 		script(type='text/javascript', src='javascripts/jquery-2.1.1.js')
 	body
 		nav
-			a.current(href='index') Accueil
-			a(href='dashboard') Tableau de bord
-			a(href='instructions') Instructions
+			if index
+				a.current(href='index') Accueil
+			else
+				a(href='index') Accueil
+			if dashboard
+				a.current(href='dashboard') Tableau de bord
+			else
+				a(href='dashboard') Tableau de bord
+			if instructions
+				a.current(href='instructions') Instructions
+			else
+				a(href='instructions') Instructions
 		block content
