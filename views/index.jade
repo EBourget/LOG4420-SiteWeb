@@ -1,5 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+
+	section.noAside
+		h1 Bienvenue sur l'application des questionnaires
+		img.logo(src='images/lenna.bmp', alt='Logo du site - Lenna Soderberg')
+		p
+			| Cette application vous permet de tester vos connaissance dans le domaine du web en passant quelques quiz.
+		p
+			| Vous pouvez également participer à des examens officiels afin de valider votre niveau !
+		p Pour commencer :
+		a(href='dashboard') Consulter votre tableau de bord
+	include footer

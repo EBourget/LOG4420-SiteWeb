@@ -1,7 +1,12 @@
 doctype html
-html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+html(lang='fr')
+	head
+		meta(charset='utf-8')
+		title= titre
+		link(rel='stylesheet', type='text/css', href='stylesheets/style.css')
+	body
+		nav
+			a.current(href='index') Accueil
+			a(href='dashboard') Tableau de bord
+			a(href='instructions') Instructions
+		block content

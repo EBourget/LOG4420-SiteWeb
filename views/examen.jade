@@ -1,0 +1,17 @@
+extends layout
+
+block content
+	section
+		em#nomDomaine
+				h1#enonceQuestion
+				form.questionnaire(action='examen', method='post')
+					article#listeChoix
+					input#valider.valider(type='submit', value='Corriger', name='valider')
+				a#abandonner.abandonner(href='results') Abandonner
+	aside#statistiques
+		h1 Note actuelle :
+		p#note 0/20
+	include footer
+	script(type='text/javascript', src='scripts/examen.js')
+	script(type='text/javascript', src='scripts/gestionQuestions.js')
+	script(type='text/javascript', src='scripts/baseDonnees.js')
