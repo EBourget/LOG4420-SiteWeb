@@ -3,11 +3,11 @@ extends layout
 block content
 	section
 		em#nomDomaine
-				h1#enonceQuestion
-				form.reponses(action='quicktest', method='post')
-					article#listeChoix
-					input#valider.valider(type='submit', value='Corriger', name='valider')
-				a.abandonner(href='results') Retour au menu
+		h1#enonceQuestion
+		form.reponses(action='quicktest', method='post')
+			article#listeChoix
+			input#valider.valider(type='submit', value='Corriger', name='valider')
+		a.abandonner(href='results') Retour au menu
 	aside#statistiques
 		h1 Note actuelle :
 		p#note
