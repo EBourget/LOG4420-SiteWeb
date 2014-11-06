@@ -34,7 +34,7 @@ $(document).ready(function ()
 			// Décision de terminer ou non l'examen en fonction du nombre de questions restantes
 			if (localStorage["nbQuestionsRepondues"] == localStorage['nbQuestions']) {
 				a.value='Terminer';
-				$('.questionnaire').attr('action', 'results.html');
+				$('.questionnaire').attr('action', 'results');
 			}
 			else{
 				a.value='Question suivante';
