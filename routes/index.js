@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  res.render('index');
+  res.render('index', { titre: 'Accueil', index: true });
 });
 
 router.get('/index', function(req, res) {
@@ -11,31 +11,31 @@ router.get('/index', function(req, res) {
 });
 
 router.get('/dashboard', function(req, res) {
-  res.render('dashboard', { titre: 'Express' });
+  res.render('dashboard', { titre: 'Tableau de bord', dashboard: true });
 });
 
 router.get('/instructions', function(req, res) {
-  res.render('instructions', { titre: 'Express' });
+  res.render('instructions', { titre: 'Instructions', instructions: true });
 });
 
 router.get('/examen', function(req, res) {
-  res.render('examen', { titre: 'Express' });
+  res.render('examen', { titre: 'Examen' });
 });
 
 router.post('/examen', function(req, res) {
-  res.render('examen', { titre: 'Express' });
+  res.render('examen', { titre: 'Examen' });
 });
 
 router.get('/quicktest', function(req, res) {
-  res.render('quicktest', { titre: 'Express' });
+  res.render('quicktest', { titre: 'Test rapide' });
 });
 
 router.post('/quicktest', function(req, res) {
-  res.render('quicktest', { titre: 'Express' });
+  res.render('quicktest', { titre: 'Test rapide' });
 });
 
 router.get('/results', function(req, res) {
-  res.render('results', { titre: 'Express' });
+  res.render('results', { titre: 'R&eacute;sultats' });
 });
 
 
