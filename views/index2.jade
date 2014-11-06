@@ -1,0 +1,21 @@
+html(lang='fr')
+	head
+		meta(charset='utf-8')
+		title Page d'accueil
+		link(rel='stylesheet', type='text/css', href='styles/style.css')
+	body
+		nav
+			a.current(href='index.html') Accueil
+			a(href='dashboard.html') Tableau de bord
+			a(href='instructions.html') Instructions
+		section.noAside
+			h1 Bienvenue sur l'application des questionnaires
+			img.logo(src='images/lenna.bmp', alt='Logo du site - Lenna Soderberg')
+			p
+				| Cette application vous permet de tester vos connaissance dans le domaine du web en passant quelques quiz.
+			p
+				| Vous pouvez également participer à des examens officiels afin de valider votre niveau !
+			p Pour commencer :
+			a(href='dashboard.html') Consulter votre tableau de bord
+		footer
+			| Anaëlle Hamon - 1753299 - Edwin Bourget - 1754638
