@@ -1,0 +1,54 @@
+extends layout
+
+block content
+	section
+		article
+			h1 Test rapide
+			a#formTest.envoyer(href='quicktest') Démarer le test
+		article
+			h1 Examen officiel
+			form#formExamen(method='POST', action='examen')
+				#choixDomaines
+				br
+				label(for='nombre_questions') Nombre de questions : 
+				input#nombre_questions(type='number', min='1', name='nombre_questions', required='required')
+				br
+				br
+				input.envoyer(type='submit', name='envoyer', value='Démarer l\'examen')
+			#alerteSujet.ui-widget
+				.ui-state-error.ui-corner-all
+					p Veuillez sélectionner au moins un sujet.
+			#alerteQuestions.ui-widget
+				.ui-state-error.ui-corner-all
+					p
+						Veuillez sélectionner au maximum
+						span#maxQuestions
+						| questions pour les domaines choisis.
+	aside.statistiques
+		h1 Statistiques
+		ul
+			li
+				| Pourcentage de tests réussis :
+				span#pourcentageTestsReussis
+			li
+				| Moyenne aux examens :
+				span#moyenneExamens
+			li
+				| Note du dernier examen :
+				span#dernierExamen
+			li
+				| Nombre d'examens :
+				span#nombreExamens
+		a(href='#details') Détails
+		br
+		a#raz(href='') Remise à zéro
+	#details
+		section
+			h1 Détails
+			p Voici l'ensemble des résultats obtenus aux examens : 
+			ul#resultatsExamens
+		a.retour(href='dashboard')
+	include footer
+	script(type='text/javascript', src='javascripts/gestionStorage.js')
+	script(type='text/javascript', src='javascripts/dashboard.js')
+	script(type='text/javascript', src='javascripts/baseDonnees.js')
