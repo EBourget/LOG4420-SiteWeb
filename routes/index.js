@@ -22,7 +22,15 @@ router.get('/examen', function(req, res) {
   res.render('examen', { titre: 'Express' });
 });
 
+router.post('/examen', function(req, res) {
+  res.render('examen', { titre: 'Express' });
+});
+
 router.get('/quicktest', function(req, res) {
+  res.render('quicktest', { titre: 'Express' });
+});
+
+router.post('/quicktest', function(req, res) {
   res.render('quicktest', { titre: 'Express' });
 });
 
