@@ -1,16 +1,16 @@
 function afficheQuestion(question)
 {
-	$('#nomDomaine').text(baseDomaines[question.domaine]); // nom du domaine
-	$('#enonceQuestion').text(question.question); // enonce de la question
+	// $('#nomDomaine').text(baseDomaines[question.domaine]); // nom du domaine
+	// $('#enonceQuestion').text(question.question); // enonce de la question
 	// affichage des choix
-	for(i=0; i < question.choix.length; i++)
-	{
-		$("#listeChoix").append("<label for='reponse"+i
-								+"'><input type='radio' name='reponse' id='reponse"+i
-								+"' value='"+(i==question.reponse)+"'>"
-								+question.choix[i]
-								+"</label>");
-	}
+	// for(i=0; i < question.choix.length; i++)
+	// {
+	// 	$("#listeChoix").append("<label for='reponse"+i
+	// 							+"'><input type='radio' name='reponse' id='reponse"+i
+	// 							+"' value='"+(i==question.reponse)+"'>"
+	// 							+question.choix[i]
+	// 							+"</label>");
+	// }
 
 };
 
