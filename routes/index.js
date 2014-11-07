@@ -18,13 +18,13 @@ router.get('/instructions', function(req, res) {
 	res.render('instructions', { titre: 'Instructions', instructions: true });
 });
 
-router.get('/examen', function(req, res, next) {
-	next();
-});
-
 router.post('/examen', function(req, res, next) {
 	req.session.nombreQuestions = req.body.nombre_questions;
 	var sujets = new Array();
+	next();
+});
+
+router.get('/examen', function(req, res, next) {
 	next();
 });
 
@@ -32,11 +32,13 @@ router.all('/examen', function(req,res) {
 	res.render('examen', { titre: 'Examen' });
 });
 
-router.get('/quicktest', function(req, res, next) {
+router.post('/quicktest', function(req, res, next) {
 	next();
 });
 
-router.post('/quicktest', function(req, res, next) {
+router.get('/quicktest', function(req, res, next) {
+	//var listeQuestions = req.session.listeQuestions;
+	//var idQuestion = Math.floor(Math.random()*listeQuestions.length);
 	next();
 });
 
