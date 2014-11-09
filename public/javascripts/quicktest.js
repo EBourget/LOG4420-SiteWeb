@@ -1,8 +1,5 @@
 $(document).ready(function ()
 {
-	var idQuestion = Math.floor(Math.random()*listeQuestions.length);
-	afficheQuestion(listeQuestions[idQuestion]);
-	// Affichage de la note
 	$('#note').text(localStorage['nombreBonnesReponsesTests'] + "/" + localStorage['nombreQuestionsTests']);
 
 	// Variable servant à l'habillage du bouton de validation de question
@@ -35,3 +32,9 @@ $(document).ready(function ()
 	
 	$('#valider').click(function(event) {corrigerTests(this, event);});	
 });
+
+function changeCSSReponses()
+{
+	$('input:radio[value="true"]').parent().css('background-color', 'rgba(18,147,36,0.7)');
+	$('input:radio[value="false"]').parent().css('background-color', 'rgba(204,0,0,0.7)');
+}

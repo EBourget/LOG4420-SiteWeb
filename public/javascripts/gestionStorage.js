@@ -6,10 +6,6 @@ if (localStorage['nombreTestsJustes'] == undefined) {localStorage['nombreTestsJu
 
 $(document).ready(function()
 {
-	// Affichage des propositions de domaines pour les examens
-	for (i =0; i<baseDomaines.length; i++)
-		$("#choixDomaines").append("<input type='checkbox' name='"+i+"' id='"+i+"' value='"+i+"'>"+baseDomaines[i]);
-	
 	// Affichage des statistiques
 	var moyenneSurVingt = (localStorage['moyenneExamens']*20).toFixed(1);
 	$('#pourcentageTestsReussis').text(localStorage['pourcentageTestsReussis']);

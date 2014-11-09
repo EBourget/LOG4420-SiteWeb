@@ -1,4 +1,5 @@
 var express = require('express');
+var db = require('../lib/db');
 var router = express.Router();
 
 /* GET home page. */
@@ -11,7 +12,11 @@ router.get('/index', function(req, res) {
 });
 
 router.get('/dashboard', function(req, res) {
-	res.render('dashboard', { titre: 'Tableau de bord', dashboard: true });
+	/*affichage des domaines*/
+	var domaines = new Array();
+	for(i=0; i<db.getNombreDomaines(); i++)
+		domaines.push(db.getDomaineById(i))
+	res.render('dashboard', { titre: 'Tableau de bord', dashboard: true, domaines: domaines });
 });
 
 router.get('/instructions', function(req, res) {
@@ -20,16 +25,39 @@ router.get('/instructions', function(req, res) {
 
 router.post('/examen', function(req, res, next) {
 	req.session.nombreQuestions = req.body.nombre_questions;
-	var sujets = new Array();
+	var domaines = ['HTML', 'CSS'];
+	/*for (i=0; i<db.getNombreDomaines(); i++)
+	{
+		monDomaine = db.getDomaineById(i);
+		if(req.body.monDomaine!= undefined)
+			domaines.push(req.body.monDomaine);
+	}*/
+	// creer un tableau avec les id des questions correspondants à sujet
+	var tabQuestions = db.getQuestionsExamen(domaines);
+	// sauvegarder ce tableau dans la session
+	req.session.tabQuestions = JSON.stringify(tabQuestions);
 	next();
 });
 
 router.get('/examen', function(req, res, next) {
+
 	next();
 });
 
 router.all('/examen', function(req,res) {
-	res.render('examen', { titre: 'Examen' });
+	var tabQuestions = JSON.parse(req.session.tabQuestions);
+	// choisir une question au hasard et on la supprime du tableau
+	idQuestion = db.getQuestionAleatoireExamen(tabQuestions);
+	// sauvegarder le nouveau tableau
+	req.session.tabQuestions = JSON.stringify(tabQuestions);
+	// récupérer la question
+	var maQuestion = db.getQuestionById(idQuestion);
+	var nomDomaine = db.getDomaineById(maQuestion.domaine);
+	var enonce = maQuestion.question;
+	var choix = maQuestion.choix;
+	var solution = maQuestion.reponse;
+	
+	res.render('examen', { titre: 'Examen', nomDomaine: nomDomaine, question: enonce, reponses: choix, idReponse: solution});
 });
 
 router.post('/quicktest', function(req, res, next) {
@@ -37,17 +65,20 @@ router.post('/quicktest', function(req, res, next) {
 });
 
 router.get('/quicktest', function(req, res, next) {
-	//var listeQuestions = req.session.listeQuestions;
-	//var idQuestion = Math.floor(Math.random()*listeQuestions.length);
 	next();
 });
 
 router.all('/quicktest', function(req,res) {
-	res.render('quicktest', { titre: 'Test rapide', nomDomaine: 'HTML, CSS ou JS', question: "Question ?!", reponses: ['Réponse 1', 'Réponse 2', 'Réponse 3'], idReponse: 2 });
+	var maQuestion = db.getQuestionAleatoireTest();
+	var nomDomaine = db.getDomaineById(maQuestion.domaine);
+	var enonce = maQuestion.question;
+	var choix = maQuestion.choix;
+	var solution = maQuestion.reponse;
+	res.render('quicktest', { titre: 'Test rapide', nomDomaine: nomDomaine, question: enonce, reponses: choix, idReponse: solution});
 });
 
 router.get('/results', function(req, res) {
-	res.render('results', { titre: 'R&eacute;sultats' });
+	res.render('results', { titre: 'Résultats' });
 });
 
 

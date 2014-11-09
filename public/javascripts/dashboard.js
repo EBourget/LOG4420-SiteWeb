@@ -8,17 +8,17 @@ $("#formExamen").submit(function verifForm()
 	var domaines = $("input:checked");
 	var mesDomaines = ""; // chaine de caractères contenant les noms des domaines séparés par des ','
 	var nombreDomaines = domaines.length;
-	var nbQuestionsExam = 0;
+	var nbQuestionsExam = 3;
 	if ( nombreDomaines == 0)
 	{
 		$("#alerteSujet").css("display","inline-block").fadeTo( "fast", 1 );
 		return false;
 	}
 	// on compte le nombre de questions
-	domaines.each( function(i)
+	/*domaines.each( function(i)
 	{
 		nbQuestionsExam += nombreQuestions(domaines[i].value);
-	});
+	});*/
 	nbQuestionsUser = parseInt($("#nombre_questions").val());
 	if( nbQuestionsUser > nbQuestionsExam)
 	{//on vérifie que le nombre de question choisi est inférieur au nombre de questions disponibles
@@ -29,14 +29,10 @@ $("#formExamen").submit(function verifForm()
 	// on récupère les questions correspondant au(x) domaine(s) choisi(s)
 	domaines.each( function(i)
 	{
-		idDomaine = domaines[i].value;
-		ajouteQuestions(idDomaine); // on ajoute les questions correspondant au domaine
-		mesDomaines = mesDomaines + baseDomaines[idDomaine];
+		mesDomaines+= domaines[i].value;
 		if (i != nombreDomaines - 1)
 			mesDomaines += ", "; // on met à jour la chaine de caractères
 	});
-	// sauvegarde de la liste de question pour l'examen
-	sessionStorage.setItem("questionsExamen", questionsExamen); 
 	// Initialisation des paramètres de l'examen
 	var nouvelExamen = new Examen(mesDomaines, 0, nbQuestionsUser);
 	var examens = JSON.parse(localStorage['examens']);
@@ -49,23 +45,13 @@ $("#formExamen").submit(function verifForm()
 	return true;
 });
 
-// ajoute les questions du domaine considéré au tableau questionsExamen
-function ajouteQuestions(idDomaine) 
-{
-	for(var i =0; i<listeQuestions.length; i++)
-	{
-		if(listeQuestions[i].domaine == idDomaine)
-			questionsExamen.push(i); //on stocke uniquement les indices des questions
-	}
-}
-
 // compte le nombre de question d'un dommaine
-function nombreQuestions(idDomaine)
+function nombreQuestions(domaine) // si c'est possible récupérer la taille du tableau obtenu !!!
 {
 	nbQuestions = 0;
-	for(var i =0; i<listeQuestions.length; i++)
+	for(var i =0; i<getNombreQuestions(); i++) // ==> il faut pouvoir récupérer le nombre de questions présentes dans la BD
 	{
-		if(listeQuestions[i].domaine == idDomaine)
+		if(getDomainesById(getQuestionById(i).domaine) == domaine) // ==> pour que ça fonctionne il faudrait pouvoir avoir accès aux questions et aux domaines dans la BD
 			nbQuestions++;
 	}
 	return nbQuestions;

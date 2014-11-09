@@ -1,16 +1,5 @@
 $(document).ready(function ()
 {
-	// Gestion des questions
-	chaineQuestions = sessionStorage.getItem("questionsExamen");
-	sessionStorage.clear;
-	var questionsExamen = chaineQuestions.split(",");
-	// choix aléatoire de la question
-	idQuestionExam = Math.floor(Math.random()*questionsExamen.length);
-	idQuestion = questionsExamen.splice(idQuestionExam,1);// on extrait la question du tableau de questions possibles
-	sessionStorage.setItem("questionsExamen", questionsExamen); 
-	questionRand = listeQuestions[idQuestion[0]];
-	// affichage
-	afficheQuestion(questionRand);
 	// Affichage de la note
 	$('#note').text(localStorage['nbQuestionsJustes'] + "/" + localStorage['nbQuestionsRepondues']);
 
@@ -51,3 +40,10 @@ $(document).ready(function ()
 	$('#valider').click(function(event) {corrigerExamen(this, event);});
 	$('#abandonner').click(function(event) {localStorage['nbQuestionsJustes'] = 0;});	// si on abandone, le nombre de réponses justes passe à 0.
 });
+
+
+function changeCSSReponses()
+{
+	$('input:radio[value="true"]').parent().css('background-color', 'rgba(18,147,36,0.7)');
+	$('input:radio[value="false"]').parent().css('background-color', 'rgba(204,0,0,0.7)');
+}

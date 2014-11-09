@@ -2,17 +2,20 @@ extends layout
 
 block content
 	section
-		em#nomDomaine
-		h1#enonceQuestion
-		form.questionnaire(action='examen', method='post')
+		em#nomDomaine= nomDomaine
+		h1#enonceQuestion= question
+		form.questionnaire(action='examen', method='get')
 			article#listeChoix
+				- each reponse, i in reponses
+					- var valeur = idReponse == i
+					label(for='reponse'+i)
+						input(type='radio', name='reponse', id='reponse'+i, value=''+valeur)
+						= reponse
 			input#valider.valider(type='submit', value='Corriger', name='valider')
 		a#abandonner.abandonner(href='results') Abandonner
-
 	aside#statistiques
 		h1 Note actuelle :
-		p#note 0/20
+		p#note 
 	include footer
 	script(type='text/javascript', src='javascripts/examen.js')
-	script(type='text/javascript', src='javascripts/gestionQuestions.js')
 	script(type='text/javascript', src='javascripts/baseDonnees.js')
