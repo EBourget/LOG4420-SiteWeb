@@ -1,3 +1,10 @@
+// création de la classe Examen
+function Examen(domaine, note, nombreQuestions) {
+	this.domaine = domaine;
+	this.note = note;
+	this.nombreQuestions = nombreQuestions;
+}
+
 if (localStorage['moyenneExamens'] == undefined) {localStorage['moyenneExamens'] = 0};
 if (localStorage['nbExamens'] == undefined) {localStorage['nbExamens'] = 0};
 if (localStorage['examens'] == undefined) {localStorage['examens'] = JSON.stringify([])};

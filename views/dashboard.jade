@@ -11,7 +11,7 @@ block content
 				#choixDomaines
 					- each domaine, i in domaines
 						label(for=''+domaine)
-							input(type='checkbox', name=''+domaine, id=''+domaine, value=''+domaine)
+							input(type='checkbox', name='domaines', value=''+domaine, data-max =''+maxQuestion[i])
 							= domaine
 				br
 				label(for='nombre_questions') Nombre de questions : 
@@ -32,16 +32,16 @@ block content
 		h1 Statistiques
 		ul
 			li
-				| Pourcentage de tests réussis :
+				| Pourcentage de tests réussis : 
 				span#pourcentageTestsReussis
 			li
-				| Moyenne aux examens :
+				| Moyenne aux examens : 
 				span#moyenneExamens
 			li
-				| Note du dernier examen :
+				| Note du dernier examen : 
 				span#dernierExamen
 			li
-				| Nombre d'examens :
+				| Nombre d'examens : 
 				span#nombreExamens
 		a(href='#details') Détails
 		br
@@ -55,4 +55,3 @@ block content
 	include footer
 	script(type='text/javascript', src='javascripts/gestionStorage.js')
 	script(type='text/javascript', src='javascripts/dashboard.js')
-	script(type='text/javascript', src='javascripts/baseDonnees.js')

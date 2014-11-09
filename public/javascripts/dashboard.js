@@ -8,17 +8,17 @@ $("#formExamen").submit(function verifForm()
 	var domaines = $("input:checked");
 	var mesDomaines = ""; // chaine de caractères contenant les noms des domaines séparés par des ','
 	var nombreDomaines = domaines.length;
-	var nbQuestionsExam = 3;
+	var nbQuestionsExam = 0;
 	if ( nombreDomaines == 0)
 	{
 		$("#alerteSujet").css("display","inline-block").fadeTo( "fast", 1 );
 		return false;
 	}
 	// on compte le nombre de questions
-	/*domaines.each( function(i)
+	domaines.each( function(i)
 	{
-		nbQuestionsExam += nombreQuestions(domaines[i].value);
-	});*/
+		nbQuestionsExam += $(domaines[i]).data('max');
+	});
 	nbQuestionsUser = parseInt($("#nombre_questions").val());
 	if( nbQuestionsUser > nbQuestionsExam)
 	{//on vérifie que le nombre de question choisi est inférieur au nombre de questions disponibles
