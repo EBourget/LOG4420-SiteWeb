@@ -28,5 +28,8 @@ block content
 		h1 Note actuelle :
 		p#note 
 	include footer
-	script(type='text/javascript', src='javascripts/examen.js')
-	script(type='text/javascript', src='javascripts/baseDonnees.js')
+	script(type='text/javascript', src='javascripts/gestionStorage.js')
+	if examen
+		script(type='text/javascript', src='javascripts/examen.js')
+	else
+		script(type='text/javascript', src='javascripts/quicktest.js')
