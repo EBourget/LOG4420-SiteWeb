@@ -1,0 +1,32 @@
+extends layout
+
+block content
+	section
+		em#nomDomaine= nomDomaine
+		h1#enonceQuestion= question
+		if examen
+			form.questionnaire(action='examen', method='get')
+				article#listeChoix
+					- each reponse, i in reponses
+						- var valeur = idReponse == i
+						label(for='reponse'+i)
+							input(type='radio', name='reponse', id='reponse'+i, value=''+valeur)
+							= reponse
+				input#valider.valider(type='submit', value='Corriger', name='valider')
+			a#abandonner.abandonner(href='results') Abandonner
+		else
+			form.reponses(action='quicktest', method='post')
+				article#listeChoix
+					- each reponse, i in reponses
+						- var valeur = idReponse == i
+						label(for='reponse'+i)
+							input(type='radio', name='reponse', id='reponse'+i, value=''+valeur)
+							= reponse
+				input#valider.valider(type='submit', value='Corriger', name='valider')
+			a.abandonner(href='dashboard') Retour au menu
+	aside#statistiques
+		h1 Note actuelle :
+		p#note 
+	include footer
+	script(type='text/javascript', src='javascripts/examen.js')
+	script(type='text/javascript', src='javascripts/baseDonnees.js')
