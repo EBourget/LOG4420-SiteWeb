@@ -23,7 +23,7 @@ exports.insertQuestion = function(req, res, callback){
 
 
 
-exports.getQuestionAleatoireTest = function(callback){
+exports.getQuestionAleatoireTest = function(callback){git s
 	Question.findOneRandom(function(err, result) {
 	if (!err) {
 		callback();
