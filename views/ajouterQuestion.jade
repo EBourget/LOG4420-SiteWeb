@@ -1,31 +1,32 @@
 extends layout
 
 block content
-	section
-		article
-			h1= message
-			h1 Ajouter une question à la basse de donnée
+	section.noAside
+		h1= message
+		h1 Ajouter une question à la base de donnée
+		form#ajoutQuestion(method='POST', action='')
+			label(for='enonce') Enoncé : 
+			input(type="text", name="enonce", id="enonce")
+			br
+			label(for='domaine') Domaine : 
+			input(type="radio", name="domaine", value="HTML")
+			| HTML
+			input(type="radio", name="domaine", value="CSS")
+			| CSS
+			input(type="radio", name="domaine", value="Javascript")
+			| Javascript
+			div#reponses
+				div
+					input(type="radio", name="reponse", value="0")
+					input.reponse(type="text", name="choix", id="reponse0", class="choix")
+					a#0.supprimerReponse Supprimer réponse
+				div
+					input(type="radio", name="reponse", value="1")
+					input.reponse(type="text", name="choix", id="reponse1", class="chiox")
+					a#1.supprimerReponse Supprimer réponse
 			button#ajouterReponse Ajouter une réponse
-			form(method='POST', action='')
-				label(for='enonce') Enoncé : 
-				input(type="text", name="enonce", id="enonce")
-				br
-				label(for='domaine') Domaine : 
-				input(type="radio", name="domaine", value="HTML")
-				| HTML
-				input(type="radio", name="domaine", value="CSS")
-				| CSS
-				input(type="radio", name="domaine", value="Javascript")
-				| Javascript
-				div#reponses
-					div
-						input(type="radio", name="reponse", value="0")
-						input.reponse(type="text", name="reponse0", id="reponse0")
-						a#0.supprimerReponse Supprimer réponse
-					div
-						input(type="radio", name="reponse", value="1")
-						input.reponse(type="text", name="reponse1", id="reponse1")
-						a#1.supprimerReponse Supprimer réponse
-				input(type='submit')
+			br
+			br
+			input.envoyer(type='submit')
 	include footer
 	script(type='text/javascript', src='javascripts/ajouterQuestion.js')

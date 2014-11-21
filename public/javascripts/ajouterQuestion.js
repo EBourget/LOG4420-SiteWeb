@@ -17,17 +17,10 @@ $(document).ready(function(){
 		$('input.reponse').css('background-color', 'red');
 		$('input#reponse'+id).css('background-color', 'green');
 	});
-	// $('.supprimerReponse').click(function(e){
-	// 	if(nbReponses == 2)
-	// 		return;
-	// 	id = $(this).attr('id');
-	// 	supprimerReponse(id);
-	// 	renommerReponses(id);
-	// });
 });
 
 function ajouterReponse(){
-	$('#reponses').append('<div><input type="radio" name="reponse" value="'+ nbReponses +'"/><input type="text" class="reponse" name="reponse'+ nbReponses +'" id="reponse'+ nbReponses +'" /><a id="'+ nbReponses +'" class="supprimerReponse">Supprimer réponse</a></div>');
+	$('#reponses').append('<div><input type="radio" name="reponse" value="'+ nbReponses +'"/><input type="text" class="choix" name="choix" id="reponse'+ nbReponses +'" /><a id="'+ nbReponses +'" class="supprimerReponse">Supprimer réponse</a></div>');
 	nbReponses++;
 }
 

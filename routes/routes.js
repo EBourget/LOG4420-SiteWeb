@@ -1,4 +1,5 @@
 var express = require('express');
+var questions = require('../models/questions');
 var db = require('../lib/db_old');
 var router = express.Router();
 
@@ -85,7 +86,11 @@ router.get('/ajouterQuestion', function(req,res){
 });
 
 router.post('/ajouterQuestion', function(req,res){
-	db.insert(req, res, function(){
+	var enonce = req.body.enonce;
+	var domaine = req.body.domaine;
+	var choix = req.body.choix;
+	var reponse = parseInt(req.body.reponse);
+	questions.insert(enonce, domaine, choix, reponse, function(){
 		res.render('ajouterQuestion', {titre: 'Ajouter une question', message: 'Ajout traité'});
 	});
 });
