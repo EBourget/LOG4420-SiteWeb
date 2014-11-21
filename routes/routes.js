@@ -85,7 +85,7 @@ router.get('/ajouterQuestion', function(req,res){
 });
 
 router.post('/ajouterQuestion', function(req,res){
-	question.insert(req, res, function(){
+	db.insert(req, res, function(){
 		res.render('ajouterQuestion', {titre: 'Ajouter une question', message: 'Ajout traité'});
 	});
 });
