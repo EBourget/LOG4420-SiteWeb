@@ -80,5 +80,15 @@ router.get('/results', function(req, res) {
 	res.render('results', { titre: 'Résultats' });
 });
 
+router.get('/ajouterQuestion', function(req,res){
+	res.render('ajouterQuestion', {titre: 'Ajouter une question', message: ''});
+});
+
+router.post('/ajouterQuestion', function(req,res){
+	question.insert(req, res, function(){
+		res.render('ajouterQuestion', {titre: 'Ajouter une question', message: 'Ajout traité'});
+	});
+});
+
 
 module.exports = router;

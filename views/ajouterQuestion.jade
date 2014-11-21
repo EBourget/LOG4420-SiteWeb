@@ -1,0 +1,31 @@
+extends layout
+
+block content
+	section
+		article
+			h1= message
+			h1 Ajouter une question à la basse de donnée
+			form(method='POST', action='')
+				label(for='enonce') Enoncé de la question :
+				input(type="text", name="enonce", id="enonce")
+				br
+				label(for='domaine') Domaine de la question :
+				input(type="radio", name="domaine", value="0") HTML
+				input(type="radio", name="domaine", value="1") CSS
+				input(type="radio", name="domaine", value="2") Javascript
+				br
+				input(type="radio", name="reponse", value="0")
+				label(for='reponse1') Reponse 1 :
+				input(type="text", name="reponse1", id="reponse1")
+				br
+				input(type="radio", name="reponse", value="1")
+				label(for='reponse2') Reponse 2 :
+				input(type="text", name="reponse2", id="reponse2")
+				br
+				input(type="radio", name="reponse", value="2")
+				label(for='reponse3') Reponse 3 :
+				input(type="text", name="reponse3", id="reponse3")
+				br
+				input(type="radio", name="reponse", value="3")
+				label(for='reponse4') Reponse 4 :
+				input(type="text", name="reponse4", id="reponse4")
