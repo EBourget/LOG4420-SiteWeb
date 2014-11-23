@@ -14,7 +14,7 @@ $(document).ready(function(){
 	});
 	$('div').on('click', 'input:radio', function(e){
 		id = parseInt($(this).attr('value'));
-		$('input.reponse').css('background-color', 'red');
+		$('input.choix').css('background-color', 'red');
 		$('input#reponse'+id).css('background-color', 'green');
 	});
 });
