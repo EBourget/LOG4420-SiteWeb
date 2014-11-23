@@ -95,5 +95,31 @@ router.post('/ajouterQuestion', function(req,res){
 	});
 });
 
+router.get('/ajouterToutesLesQuestions', function(req,res){
+	function Question(domaine, question, choix, reponse) {
+		this.domaine = domaine;
+		this.question = question;
+		this.choix = choix;
+		this.reponse = reponse;
+	}
+	quest0= new Question("HTML","What is the previous version of HTML, prior to HTML5?", ["HTML 4.01", "HTML 4", "HTML 4.1", "HTML 4.9"], 2);
+	quest1= new Question("HTML","What does HTML stand for?", ["Hyper Text Markup Language","Hyperlinks and Text Markup Language","Home Tool Markup Language"], 0);
+	quest2= new Question("HTML","Which HTML5 element is used to specify a footer for a document or section",["<footer>","<bottom>","<section>"],0);
+	quest3= new Question("HTML","In HTML5, onblur and onfocus are:",["HTML elements","Event attributes","Style attributes"],1);
+	quest4= new Question("CSS","What does CSS stand for?",["Creative Style Sheets","Computer Style Sheets","Cascading Style Sheets","Colorful Style Sheets"],2);
+	quest5= new Question("CSS","Where in an HTML document is the correct place to refer to an external style sheet?", ["In the <head> section","At the top of the document","At the end of the document","In the <body> section"],0);
+	quest6= new Question("CSS","Which HTML tag is used to define an internal style sheet?",["<script>","<css>","<style>"],2);
+	quest7= new Question("JavaScript","Inside which HTML element do we put the JavaScript?",["<scripting>","<js>","<javascript>","<script>"],3);
+	quest8= new Question("JavaScript","Where is the correct place to insert a JavaScript?",["The <body> section","<head> or <body> are correct","The <head> section"],1);
+	quest9= new Question("JavaScript","How does a WHILE loop start?",["while (i <= 10)","while i = 1 to 10","while (i <= 10; i++)"],0);
+
+	var listeQuestions = [quest0, quest1, quest2, quest3, quest4, quest5, quest6, quest7, quest8, quest9];
+
+	for (var i = 0; i < listeQuestions.length ; i++) {
+		questions.insert(listeQuestions[i].question, listeQuestions[i].domaine, listeQuestions[i].choix, listeQuestions[i].reponse, function(){});
+	};
+	res.render('index');
+});
+
 
 module.exports = router;
