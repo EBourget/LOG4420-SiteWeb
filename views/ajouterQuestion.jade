@@ -6,7 +6,7 @@ block content
 		h1 Ajouter une question à la base de donnée
 		form#ajoutQuestion(method='POST', action='')
 			label(for='enonce') Enoncé : 
-			input(type="text", name="enonce", id="enonce")
+			input(type="text", name="enonce", id="enonce" required)
 			br
 			label(for='domaine') Domaine : 
 			input(type="radio", name="domaine", value="HTML")
@@ -18,15 +18,21 @@ block content
 			div#reponses
 				div
 					input(type="radio", name="reponse", value="0")
-					input(type="text", name="choix", id="reponse0", class="choix")
+					input(type="text", name="choix", id="reponse0", class="choix" required)
 					a#0.supprimerReponse Supprimer réponse
 				div
 					input(type="radio", name="reponse", value="1")
-					input(type="text", name="choix", id="reponse1", class="choix")
+					input(type="text", name="choix", id="reponse1", class="choix" required)
 					a#1.supprimerReponse Supprimer réponse
 			button#ajouterReponse Ajouter une réponse
 			br
 			br
 			input.envoyer(type='submit')
+			#alerteDomaine.ui-widget
+				.ui-state-error.ui-corner-all
+					p Veuillez sélectionner un domaine pour la question.
+			#alerteReponse.ui-widget
+				.ui-state-error.ui-corner-all
+					p Veuillez sélectionner la bonne réponse.
 	include footer
 	script(type='text/javascript', src='javascripts/ajouterQuestion.js')

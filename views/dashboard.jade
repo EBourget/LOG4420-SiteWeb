@@ -9,10 +9,15 @@ block content
 			h1 Examen officiel
 			form#formExamen(method='POST', action='examen')
 				#choixDomaines
-					- each domaine, i in domaines
-						label(for=''+domaine)
-							input(type='checkbox', name='domaines', value=''+domaine, data-max =''+maxQuestion[i])
-							= domaine
+					label(for='HTML')
+						input(type='checkbox', name='domaines', value='HTML', data-max =''+maxQuestion[0])
+						span HTML
+					label(for='CSS')
+						input(type='checkbox', name='domaines', value='CSS', data-max =maxQuestion[1])
+						span CSS
+					label(for='JavaScript')
+						input(type='checkbox', name='domaines', value='JavaScript', data-max =maxQuestion[2])
+						span JavaScript
 				br
 				label(for='nombre_questions') Nombre de questions : 
 				input#nombre_questions(type='number', min='1', name='nombre_questions', required='required')

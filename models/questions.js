@@ -1,9 +1,8 @@
 var random = require('mongoose-simple-random');
-var mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+var db = require('../lib/db');
 
-var Question = new Schema({
+var Question = new db.Schema({
 	enonce : String,
 	domaine : String,
 	reponses : Array,
@@ -11,9 +10,9 @@ var Question = new Schema({
 });
 Question.plugin(random);
 
-var ModeleQuestion = mongoose.model('modeleQuestions', Question);
+var ModeleQuestion = db.mongoose.model('Questions', Question);
 
-exports.insert = function(enonce, domaine, choix, reponse, callback){
+module.exports.insert = function(enonce, domaine, choix, reponse, callback){
 	var modele = new ModeleQuestion();
 	modele.enonce = enonce;
 	modele.domaine = domaine;
@@ -23,42 +22,41 @@ exports.insert = function(enonce, domaine, choix, reponse, callback){
 		if (err) console.log('Erreur');
 		console.log('Insertion');
 	});
-	callback();
 };
 
-exports.getQuestionById = function(id, callback){
-	Question.findOne({_id: id}, function(err, doc){
+module.exports.getQuestionById = function(id, callback){
+	ModeleQuestion.findOne({_id: id}, function(err, doc){
 		if(err) return;
 		console.log(doc);
 		callback(doc);
 	});
 };
 
-exports.getDomaine = function(idQuestion, callback){
-	question = getQestionbyId(idQuestion, function(doc){return doc});
-	callback(question.domaine);
+module.exports.getQuestionAleatoireTest = function(callback){
+	return ModeleQuestion.findOneRandom(function(err, result) {
+	if (!err)
+		callback(result);
+  	});
 };
 
-exports.getAleatoireTest = function(callback){
-	Question.findOneRandom(function(err, result) {
-	if (!err) {
-		callback();
-  }
-})
+module.exports.getQuestionAleatoireExamen = function(questions)
+{
+	var idQuestionInTab = Math.floor(Math.random()*questions.length); // on choisit un nombre au hasard entre 0 et la taille de questions
+	var question = questions.splice(idQuestionInTab,1); // on extrait l'élément 'tiré' au hasard
+	return question;
 };
 
-exports.getQuestionsDomaine = function(domaineQuestion, callback){
-	Question.find({domaine: domaineQuestion}, function(err, docs){
-		if(err) return;
-		console.log(docs);
-		callback(docs);
+module.exports.getQuestionsDomaine = function(domaineQuestion, callback){
+	ModeleQuestion.find({domaine: domaineQuestion}, function(err, docs){
+		if(!err)
+			callback(docs);
 	});
 };
 
-exports.getMaxQuestionsDomaine = function(domaineQuestion, callback){
-	Question.count({domaine: domaineQuestion}, function(err, nombre){
-		if(err) return;
-		console.log(nombre);
-		callback(nombre);
+module.exports.getQuestionsExamen = function(domaines, callback)
+{
+	ModeleQuestion.find({domaine: {$in: domaines}}, function(err, docs){
+		if(!err)
+			callback(docs);
 	});
 };

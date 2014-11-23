@@ -20,7 +20,7 @@ $(document).ready(function(){
 });
 
 function ajouterReponse(){
-	$('#reponses').append('<div><input type="radio" name="reponse" value="'+ nbReponses +'"/><input type="text" class="choix" name="choix" id="reponse'+ nbReponses +'" /><a id="'+ nbReponses +'" class="supprimerReponse">Supprimer réponse</a></div>');
+	$('#reponses').append('<div><input type="radio" name="reponse" value="'+ nbReponses +'"/><input type="text" class="choix" name="choix" id="reponse'+ nbReponses +'" required/><a id="'+ nbReponses +'" class="supprimerReponse">Supprimer réponse</a></div>');
 	nbReponses++;
 }
 
@@ -38,3 +38,22 @@ function renommerReponses(id){
 	}
 	nbReponses --;
 };
+
+$('#ajoutQuestion').submit(function()
+{
+	$("#alerteDomaine").css("display","inline-block").fadeTo( "fast", 0 ).css("display","none");
+	$("#alerteReponse").css("display","inline-block").fadeTo( "fast", 0 ).css("display","none");
+	var domaine = $('input[name=domaine]:checked');
+	var solution = $('input[name=reponse]:checked');
+	if (domaine.length == 0)
+	{
+		$("#alerteDomaine").css("display","inline-block").fadeTo( "fast", 1 );
+		return false;
+	}
+	if (solution.length == 0)
+	{
+		$("#alerteReponse").css("display","inline-block").fadeTo( "fast", 1 );
+		return false;
+	}
+	return true;
+});

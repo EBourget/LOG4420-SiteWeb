@@ -1,6 +1,5 @@
 var express = require('express');
 var questions = require('../models/questions');
-var db = require('../lib/db_old');
 var router = express.Router();
 
 /* GET home page. */
@@ -14,14 +13,20 @@ router.get('/index', function(req, res) {
 
 router.get('/dashboard', function(req, res) {
 	/*affichage des domaines et recherche du nombre max de question par domaine*/
-	var domaines = new Array();
-	var maxQuestion = new Array();
-	for(i=0; i<db.getNombreDomaines(); i++)
+	var maxQuestion = new Array;
+	questions.getQuestionsDomaine("HTML", function(question1)
 	{
-		domaines.push(db.getDomaineById(i));
-		maxQuestion.push(db.getMaxQuestion(i));
-	}
-	res.render('dashboard', { titre: 'Tableau de bord', dashboard: true, domaines: domaines,maxQuestion: maxQuestion});
+		maxQuestion.push(question1.length);
+		questions.getQuestionsDomaine("CSS", function(question2)
+		{
+			maxQuestion.push(question2.length);
+			questions.getQuestionsDomaine("JavaScript", function(question3)
+			{
+				maxQuestion.push(question3.length);
+				res.render('dashboard', { titre: 'Tableau de bord', dashboard: true, alertes:true, maxQuestion: maxQuestion});
+			});
+		});
+	});
 });
 
 router.get('/instructions', function(req, res) {
@@ -35,10 +40,16 @@ router.post('/examen', function(req, res, next) {
 	if(typeof domaines == "string") // s'il n'y a qu'un domaine on le mets dans un tableau
 	domaines =[domaines];
 	// creer un tableau avec les id des questions correspondants à sujet
-	var tabQuestions = db.getQuestionsExamen(domaines);
-	// sauvegarder ce tableau dans la session
-	req.session.tabQuestions = JSON.stringify(tabQuestions);
-	next();
+	var tabQuestions = new Array;
+
+	questions.getQuestionsExamen(domaines, function(listeQuestions)
+	{
+		for (i = 0; i< listeQuestions.length; i++)
+			tabQuestions.push(listeQuestions[i]._id);
+		// sauvegarder ce tableau dans la session
+		req.session.tabQuestions = JSON.stringify(tabQuestions);
+		next();
+	});
 });
 
 router.get('/examen', function(req, res, next) {
@@ -48,16 +59,14 @@ router.get('/examen', function(req, res, next) {
 router.all('/examen', function(req,res) {
 	var tabQuestions = JSON.parse(req.session.tabQuestions);
 	// choisir une question au hasard et on la supprime du tableau
-	maQuestion = db.getQuestionAleatoireExamen(tabQuestions);
+	var idQuestion = questions.getQuestionAleatoireExamen(tabQuestions);
 	// sauvegarder le nouveau tableau
 	req.session.tabQuestions = JSON.stringify(tabQuestions);
-	// récupérer les attributs de la question
-	var nomDomaine = db.getDomaine(maQuestion);
-	var enonce = db.getQuestion(maQuestion);
-	var choix = db.getChoix(maQuestion);
-	var solution = db.getReponse(maQuestion);
-	
-	res.render('questions', { examen: true, titre: 'Examen', nomDomaine: nomDomaine, question: enonce, reponses: choix, idReponse: solution});
+	// récupérer la question
+	var question = questions.getQuestionById(idQuestion, function(question){
+		res.render('questions', { examen: true, titre: 'Examen', nomDomaine: question.domaine, question: question.enonce, reponses: question.reponses, idReponse: question.bonneReponse});
+	}
+	);
 });
 
 router.post('/quicktest', function(req, res, next) {
@@ -69,12 +78,9 @@ router.get('/quicktest', function(req, res, next) {
 });
 
 router.all('/quicktest', function(req,res) {
-	var maQuestion = db.getQuestionAleatoireTest();
-	var nomDomaine = db.getDomaine(maQuestion);
-	var enonce = db.getQuestion(maQuestion);
-	var choix = db.getChoix(maQuestion);
-	var solution = db.getReponse(maQuestion);
-	res.render('questions', { examen: false, titre: 'Test rapide', nomDomaine: nomDomaine, question: enonce, reponses: choix, idReponse: solution});
+	questions.getQuestionAleatoireTest(function(question){
+		res.render('questions', { examen: false, titre: 'Test rapide', nomDomaine: question.domaine, question: question.enonce, reponses: question.reponses, idReponse: question.bonneReponse});
+	});
 });
 
 router.get('/results', function(req, res) {
@@ -116,9 +122,9 @@ router.get('/ajouterToutesLesQuestions', function(req,res){
 	var listeQuestions = [quest0, quest1, quest2, quest3, quest4, quest5, quest6, quest7, quest8, quest9];
 
 	for (var i = 0; i < listeQuestions.length ; i++) {
-		questions.insert(listeQuestions[i].question, listeQuestions[i].domaine, listeQuestions[i].choix, listeQuestions[i].reponse, function(){});
+		questions.insert(listeQuestions[i].question, listeQuestions[i].domaine, listeQuestions[i].choix, listeQuestions[i].reponse);
 	};
-	res.render('index');
+	res.render('index', {alertes : true});
 });
 
 

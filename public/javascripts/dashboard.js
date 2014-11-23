@@ -38,8 +38,11 @@ $("#formExamen").submit(function verifForm()
 	var examens = JSON.parse(localStorage['examens']);
 	examens.push(nouvelExamen);
 	localStorage['examens'] = JSON.stringify(examens);
-	localStorage['nbExamens']++; // nombre d'examens passés
+	localStorage['nbExamens']++;
+	var moyenneTotale = (localStorage['moyenneExamens'] * (localStorage['nbExamens'] -1)) / localStorage['nbExamens'];
+	localStorage['moyenneExamens'] = moyenneTotale;
 	localStorage['nbQuestions'] = nbQuestionsUser;
+	localStorage['dernierExamen'] = "0/"+nbQuestionsUser;
 	localStorage['nbQuestionsRepondues'] = 0;
 	localStorage['nbQuestionsJustes'] = 0;
 	return true;

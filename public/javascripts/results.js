@@ -4,7 +4,7 @@ $(document).ready(function() {
 	$('#note').text(localStorage['nbQuestionsJustes'] + "/" + localStorage['nbQuestions']);
 
 	//Calcul de la moyenne : chaque examen à la même pondération, indépendamment du nombre de questions
-	var moyenneTotale = ((localStorage['moyenneExamens'] * (localStorage['nbExamens'] -1)) + (localStorage['nbQuestionsJustes'] / localStorage['nbQuestions']))/ localStorage['nbExamens']; 
+	var moyenneTotale = ((localStorage['moyenneExamens'] * (localStorage['nbExamens'])) + (localStorage['nbQuestionsJustes'] / localStorage['nbQuestions']))/ localStorage['nbExamens']; 
 
 	// Stockage des statistiques
 	var examens = JSON.parse(localStorage['examens']);
