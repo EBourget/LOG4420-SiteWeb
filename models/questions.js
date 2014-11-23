@@ -22,6 +22,7 @@ module.exports.insert = function(enonce, domaine, choix, reponse, callback){
 		if (err) console.log('Erreur');
 		console.log('Insertion');
 	});
+	callback();
 };
 
 module.exports.getQuestionById = function(id, callback){
