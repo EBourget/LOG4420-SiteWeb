@@ -1,6 +1,7 @@
 var express = require('express');
 var questions = require('../models/questions');
 var router = express.Router();
+var statistiques = require('../models/statistiques')
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -127,5 +128,53 @@ router.get('/ajouterToutesLesQuestions', function(req,res){
 	res.render('index', {alertes : true});
 });
 
+router.route('/statistiques/Examens')
+	.get(function(req,res){
+		console.log("Appel au service de récupération d'examen");
+		statistiques.getAllExamens(function(examens){
+			res.json(examens);
+		});
+	});
+
+router.route('/statistiques/StatsExamens')
+	.get(function(req,res){
+		console.log("Appel au service de récupération des stats d'examens");
+		statistiques.recupererStatsExamens(function(nbExamens, noteTotale){
+			res.json({nbExamens: nbExamens, noteTotale: noteTotale});
+		});
+	});
+
+router.route('/statistiques/LastExamen')
+	.get(function(req,res){
+		console.log("Appel au service de récupération du dernier examen");
+		statistiques.getLastExamen(function(examen){
+			res.json(examen);
+		});
+	});
+
+router.route('/statistiques/Examens/:domaine/:nbQuestions')
+	.put(function(req,res){
+		console.log("Appel au service d'insertion d'examen");
+		statistiques.insert(req.params.domaine, req.params.nbQuestions, function(){
+			res.json({message: "Ajout d'un examen"});
+		})
+	});
+
+router.route('/statistiques/Examens/:domaine/:nbQuestions/:note')
+	.post(function(req,res){
+		console.log("Appel au service d'insertion de note");
+		statistiques.ajouterNote(req.params.domaine, req.params.note, req.params.nbQuestions, function(exam){
+			res.json({message: "Ajout d'une note"});
+		})
+	});
+
+// Une fois que tu pourras passer la date (ou l'id si tu veux) via la session, supprime la route précédente et remplace-la par ce que j'ai commenté.
+// router.route('/statistiques/Examens/:date/:note')
+// 	.post(function(req,res){
+// 		console.log("Appel au service d'insertion de note");
+// 		statistiques.ajouterNote(req.params.date, req.params.note, function(exam){
+// 			res.json({message: "Ajout d'une note"});
+// 		})
+// 	});
 
 module.exports = router;
