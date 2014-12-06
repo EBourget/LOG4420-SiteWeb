@@ -78,9 +78,14 @@ router.get('/quicktest', function(req, res, next) {
 });
 
 router.all('/quicktest', function(req,res) {
-	questions.getQuestionAleatoireTest(function(question){
-		res.render('questions', { examen: false, titre: 'Test rapide', nomDomaine: question.domaine, question: question.enonce, reponses: question.reponses, idReponse: question.bonneReponse});
-	});
+	// initialisation des stats des tests
+	if(req.session.noteTests == undefined)
+		req.session.noteTests = 0;
+	if(req.session.nbQuestionsTests == undefined)
+		req.session.nbQuestionsTests = 0;
+	req.session.noteCourante = 0;
+	req.session.nbQuestionsCourant = 0;
+	res.render('questions', { examen: false, titre: 'Test rapide'});
 });
 
 router.get('/results', function(req, res) {
@@ -122,9 +127,47 @@ router.get('/ajouterToutesLesQuestions', function(req,res){
 	var listeQuestions = [quest0, quest1, quest2, quest3, quest4, quest5, quest6, quest7, quest8, quest9];
 
 	for (var i = 0; i < listeQuestions.length ; i++) {
-		questions.insert(listeQuestions[i].question, listeQuestions[i].domaine, listeQuestions[i].choix, listeQuestions[i].reponse);
+		questions.insert(listeQuestions[i].question, listeQuestions[i].domaine, listeQuestions[i].choix, listeQuestions[i].reponse, function(){});
 	};
 	res.render('index', {alertes : true});
+});
+
+router.get('/api/getQuestionAleatoire/', function(req,res){
+	questions.getQuestionAleatoireTest(function(question){
+		res.json({ 	domaine: question.domaine, 
+					enonce: question.enonce, 
+					reponses: question.reponses,
+					id: question._id 
+			});
+	});
+});
+
+router.get('/api/getBonneReponse/:id', function(req,res){
+	questions.getQuestionById(req.params.id, function(question){
+		res.json({ reponse: question.bonneReponse });
+	});
+});
+
+router.get("/api/getNoteTest/", function(req,res)
+{
+	res.json({
+		note: req.session.noteCourante,
+		nbQuestions: req.session.nbQuestionsCourant
+	});
+});
+
+router.get("/api/addBonneReponseTest/", function(req,res)
+{
+	req.session.noteCourante ++;
+	req.session.noteTests ++;
+	res.json({data: "resultat"});
+});
+
+router.get("/api/addQuestionTest/", function(req,res)
+{
+	req.session.nbQuestionsCourant ++;
+	req.session.nbQuestionsTests ++;
+	res.json({data: "resultat"});
 });
 
 

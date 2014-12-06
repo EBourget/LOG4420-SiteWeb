@@ -26,9 +26,9 @@ module.exports.insert = function(enonce, domaine, choix, reponse, callback){
 };
 
 module.exports.getQuestionById = function(id, callback){
+
 	ModeleQuestion.findOne({_id: id}, function(err, doc){
 		if(err) return;
-		console.log(doc);
 		callback(doc);
 	});
 };
