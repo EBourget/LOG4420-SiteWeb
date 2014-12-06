@@ -50,13 +50,15 @@ module.exports.getLastExamen = function(callback){
 module.exports.recupererStatsExamens = function(callback){
 	var nbExamens = 0;
 	var noteTotale = 0;
+	var nbQuestions = 0;
 	ModeleExamen.find({}, function(err, docs){
 		if(err) return;
 		for (var i = docs.length - 1; i >= 0; i--) {
 			nbExamens++;
+			nbQuestions += docs[i].nombreQuestions;
 			noteTotale += docs[i].note;
 		};
-		callback(noteTotale, nbExamens);
+		callback(noteTotale, nbExamens, nbQuestions);
 	});
 };
 

@@ -226,10 +226,10 @@ router.get('/api/Examens',function(req,res){
 
 router.get('/api/StatsExamens',function(req,res){
 	console.log("Appel au service de récupération des stats d'examens");
-	examens.recupererStatsExamens(function(noteTotale, nbExams){
+	examens.recupererStatsExamens(function(noteTotale, nbExams, nbQuestions){
 		if (nbExams == undefined)
 			nbExams = 0;
-		res.json({noteTotale: noteTotale, nbExams: nbExams});
+		res.json({noteTotale: noteTotale, nbExams: nbExams, nbQuestions: nbQuestions});
 	});
 });
 

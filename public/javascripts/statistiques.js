@@ -6,7 +6,7 @@ Quiz.controller('StatController', function($scope, $http, ModeleStat){
 		{
 			$scope.nombreExamens = data2.nbExams;
 			if(data2.nbExams != 0)
-				$scope.moyenneExamens = ((data2.noteTotale/data2.nbExams)*20).toFixed(1);
+				$scope.moyenneExamens = ((data2.noteTotale/data2.nbQuestions)*20).toFixed(1);
 			else
 				$scope.moyenneExamens = 0;
 			ModeleStat.statsTests($http, function(data3)
