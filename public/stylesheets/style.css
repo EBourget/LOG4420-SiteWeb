@@ -225,12 +225,12 @@ input[type="submit"].envoyer{
 	border: 0px;
 }
 
-input[type="submit"].envoyer:hover{
+.envoyer:hover{
 	background-color: #0f7c1e;
 }
 
 /*Mise en page des boutons de la classe valider*/
-input[type="submit"].valider{
+input[type="submit"]#valider{
 	background-color: #129324;
 	color: #fff;
 	font-size: 1em;
@@ -239,7 +239,7 @@ input[type="submit"].valider{
 	border: 0px;
 }
 
-input[type="submit"].valider:hover{
+input[type="submit"]#valider:hover{
 	background-color: #0f7c1e;
 }
 
@@ -248,7 +248,7 @@ input[type="checkbox"]{
 }
 
 /*Mise en page des boutons de la classe abandonner*/
-a.abandonner{
+a#abandonner{
 	background-color: #cc0000;
 	color: #fff;
 	font-size: 1em;
@@ -259,7 +259,7 @@ a.abandonner{
 	line-height: 40px;
 }
 
-a.abandonner:hover{
+a#abandonner:hover{
 	background-color: #cc0033;
 }
 

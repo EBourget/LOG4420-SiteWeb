@@ -1,34 +1,23 @@
 extends layout
 
 block content
-	section(ng-app)
-		em#nomDomaine(ng-controller='question') {{nomDomaine}}
-		h1#enonceQuestion(ng-controller='question') {{question}}
-		if examen
-			form.questionnaire(action='examen', method='get')
-				article#listeChoix
-					- each reponse, i in reponses
-						- var valeur = idReponse == i
-						label(for='reponse'+i)
-							input(type='radio', name='reponse', id='reponse'+i, value=''+valeur)
-							= reponse
-				input#valider.valider(type='submit', value='Corriger', name='valider')
-			a#abandonner.abandonner(href='results') Abandonner
-		else
-			form.reponses(action='quicktest', method='post')
-				article#listeChoix
-					- each reponse, i in reponses
-						- var valeur = idReponse == i
-						label(for='reponse'+i)
-							input(type='radio', name='reponse', id='reponse'+i, value=''+valeur)
-							= reponse
-				input#valider.valider(type='submit', value='Corriger', name='valider')
-			a.abandonner(href='dashboard') Retour au menu
-	aside#statistiques
-		h1 Note actuelle :
-		p#note 
+	div(ng-controller="QuestionController")
+		section
+			em#nomDomaine {{domaine}}
+			h1#enonceQuestion {{enonce}}
+			article#listeChoix
+				label(ng-repeat="reponse in reponseList" for="{{$index}}")
+					input(type='radio', name='reponse', id="{{$index}}")
+					{{reponse}}
+			a#valider(name='valider', ng-click='action()')
+			if examen
+				a#abandonner(href='results') Abandonner
+			else
+				a#abandonner(href='dashboard') Retour au menu
+		aside#statistiques
+			h1 Note actuelle :
+			p {{note}}/{{nbQuestions}}
 	include footer
-	script(type='text/javascript', src='javascripts/gestionStorage.js')
 	if examen
 		script(type='text/javascript', src='javascripts/examen.js')
 	else

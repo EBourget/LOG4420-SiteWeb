@@ -20,18 +20,13 @@ module.exports.insert = function(domaine, nombreQuestions, callback){
 	console.log(exam);
 	exam.save(function (err) {
 		if (err) console.log('Erreur');
-		console.log("Insertion de statistiques d'examen");
 	});
-	callback();
+	callback(exam._id);
 };
 
-// Une fois que tu pourras passer la date par le local storage (ou l'id si tu veux) via la session, remplace les deux premières lignes de la fonction par ce que j'ai commenté et ça devrait marcher
-//
-// module.exports.ajouterNote = function(date, noteE, callback){
-// 	ModeleExamen.findOne({date: date}, function(err, doc){
-module.exports.ajouterNote = function(domaineE, noteE, nombreQuestionsE, callback){
-	ModeleExamen.findOne({domaine: domaineE, note: 0, nombreQuestions: nombreQuestionsE}, function(err, doc){
-		doc.note = noteE;
+module.exports.ajouterNote = function(id, note,callback){
+	ModeleExamen.findOne({_id: id}, function(err, doc){
+		doc.note = note;
 		console.log("Ajout d'une note à un examen");
 		doc.save();
 		callback();
@@ -61,6 +56,14 @@ module.exports.recupererStatsExamens = function(callback){
 			nbExamens++;
 			noteTotale += docs[i].note;
 		};
-		callback(nbExamens, noteTotale);
+		callback(noteTotale, nbExamens);
+	});
+};
+
+module.exports.clean = function(callback)
+{
+	ModeleExamen.drop(function(err,res){
+		if(!err)
+			callback(res);
 	});
 };
