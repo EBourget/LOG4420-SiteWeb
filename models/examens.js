@@ -62,8 +62,8 @@ module.exports.recupererStatsExamens = function(callback){
 
 module.exports.clean = function(callback)
 {
-	ModeleExamen.drop(function(err,res){
+	ModeleExamen.remove({}, function(err, exams){
 		if(!err)
-			callback(res);
+			callback();
 	});
 };
