@@ -245,7 +245,7 @@ router.get('/api/LastExamen', function(req,res){
 		if (examen == undefined)
 		{
 			note = 0;
-			nombreQuestions = 0;
+			nbQuestions = 0;
 		}
 		else
 		{
@@ -254,14 +254,6 @@ router.get('/api/LastExamen', function(req,res){
 		}
 		res.json({ note: note, 
 				nbQuestions: nbQuestions}); 
-	});
-});
-
-router.get('/api/StatsCourantes', function(req,res)
-{
-	res.json({
-		note: req.session.noteCourante,
-		nbQuestions: req.session.nombreQuestions
 	});
 });
 

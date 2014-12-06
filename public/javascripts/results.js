@@ -1,5 +1,5 @@
 Quiz.controller('ResultsController', function($scope, $http, ModeleResultat){
-	ModeleResultat.statsCourantes($http, function(data)
+	ModeleResultat.lastExamen($http, function(data)
 	{
 		$scope.note = data.note;
 		$scope.nbQuestions = data.nbQuestions;
@@ -20,9 +20,9 @@ Quiz.controller('ResultsController', function($scope, $http, ModeleResultat){
 });
 
 Quiz.service('ModeleResultat', function(){
-	this.statsCourantes = function(service, callback)
+	this.lastExamen = function(service, callback)
 	{
-		var response = service.get('/api/StatsCourantes');
+		var response = service.get('/api/LastExamen');
 		response.success(function(data, status, headers, config){
 			callback(data);
 		});
