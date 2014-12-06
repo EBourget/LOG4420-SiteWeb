@@ -1,11 +1,10 @@
 extends layout
 block content
-	section.noAside
+	section.noAside(ng-controller='ResultsController')
 		h1 Note finale
-		p#note
-		p#message
+		p {{note}}/{{nbQuestions}}
+		p {{message}}
 		a(href='dashboard') Retourner au tableau de bord
 	include footer
 	script(type='text/javascript', src='javascripts/results.js')
-	script(type='text/javascript', src='javascripts/gestionStorage.js')
 

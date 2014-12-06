@@ -1,40 +1,124 @@
-$(document).ready(function ()
-{
-	$('#note').text(localStorage['nombreBonnesReponsesTests'] + "/" + localStorage['nombreQuestionsTests']);
+Quiz.controller('QuestionController', function($scope, $http, AjouterModel){
+	var id;
+	var miseAJour = function()
+	{
+		AjouterModel.getNoteCourante($http, function(data)
+		{
+			$scope.note = data.note;
+			$scope.nbQuestions = data.nbQuestions;
+		});
+	}
+	// modèle de la question
+	var nouvelleQuestion = function()
+	{
+		console.log('nouvelleQuestion');
+		AjouterModel.getQuestionAleatoireTest($http, function(data)
+		{
+			$scope.domaine = data.domaine;
+			$scope.enonce = data.enonce;
+			$scope.reponseList = data.reponses;
+			id = data.id;
+		});
+	}
+	// correction de la question
+	var corriger = function()
+	{
+		AjouterModel.getBonneReponse($http, id, function(data)
+		{
+			var reponses = $("input[type='radio']");
+			var idReponse = data.reponse;
+			var estCorrect;
+			AjouterModel.addQuestionTest($http, function(){
+				for(i = 0; i< reponses.length; i++)
+				{
+					if(parseInt($(reponses[i]).attr('id')) == idReponse)
+					{
+						$(reponses[i]).parent().css('background-color', 'rgba(18,147,36,0.7)');
+						estCorrect = $(reponses[i]).is(':checked');
+					}
+					else
+						$(reponses[i]).parent().css('background-color', 'rgba(204,0,0,0.7)');
+				}
+				if(estCorrect)
+					AjouterModel.addBonneReponseTest($http, function(){
+						miseAJour();
+					});
+				else
+					miseAJour();	
+			});	
+		});
+	};
 
-	// Variable servant à l'habillage du bouton de validation de question
-	var vanilla = true;
-	
-	function corrigerTests(a, event) {
-		if(vanilla){
-			// On retire l'envoi du formulaire pour cette fois
-			event.preventDefault();
+	// initialisation
+	nouvelleQuestion();
+	$("#valider").text("Corriger");
+	vanilla = false;
+	$scope.note = 0;
+	$scope.nbQuestions = 0;
 
-			// Changement des couleurs d'arrière-plan des réponses
-			changeCSSReponses();
-
-			// Traitement des réponses : mise à jour des données du test courant et des données totales
-			if($('input:checked').val() == "true"){
-				localStorage["nombreBonnesReponsesTests"]++;
-				localStorage['nombreTestsJustes'] ++;
-			}
-			localStorage['nombreQuestionsTests']++;
-			a.value='Question suivante';
-			localStorage['nombreTests'] ++;
-			
-			// La prochaine fois, il faudra envoyer le formulaire 
+	$scope.action = function(){
+		if(vanilla)
+		{
+			nouvelleQuestion();
+			$("#valider").text("Corriger");
 			vanilla = false;
 		}
-		else{
-			$('.questionnaire').submit();
+		else
+		{
+			corriger();
+			$("#valider").text("Question Suivante");
+			vanilla = true;
 		}
-	};
-	
-	$('#valider').click(function(event) {corrigerTests(this, event);});	
+	};	
 });
 
-function changeCSSReponses()
-{
-	$('input:radio[value="true"]').parent().css('background-color', 'rgba(18,147,36,0.7)');
-	$('input:radio[value="false"]').parent().css('background-color', 'rgba(204,0,0,0.7)');
-}
+Quiz.service('AjouterModel', function(){
+	this.getQuestionAleatoireTest = function(service, callback){
+		var response = service.get("/api/getQuestionAleatoireTest/");
+		response.success(function(data, status, headers, config){
+			callback(data);
+		});
+		response.error(function(data, status, headers, config){
+			alert('Problème avec AJAX');
+		});
+	};
+	this.getNoteCourante = function(service, callback)
+	{
+		var response = service.get("/api/getNote/");
+		response.success(function(data, status, headers, config){
+			callback(data);
+		});
+		response.error(function(data, status, headers, config){
+			alert('Problème avec AJAX');
+		});
+	};
+	this.getBonneReponse = function(service, id, callback){
+		var response = service.get("/api/getBonneReponse/"+id);
+		response.success(function(data, status, headers, config){
+			callback(data);
+		});
+		response.error(function(data, status, headers, config){
+			alert('Problème avec AJAX');
+		});
+	};
+	this.addBonneReponseTest = function(service, callback)
+	{
+		var response = service.get("/api/addBonneReponseTest/");
+		response.success(function(data, status, headers, config){
+			callback();
+		});
+		response.error(function(data, status, headers, config){
+			alert('Problème avec AJAX');
+		});
+	};
+	this.addQuestionTest = function(service, callback)
+	{
+		var response = service.get("/api/addQuestionTest/");
+		response.success(function(data, status, headers, config){
+			callback();
+		});
+		response.error(function(data, status, headers, config){
+			alert('Problème avec AJAX');
+		});
+	};
+});

@@ -20,13 +20,11 @@ module.exports.insert = function(enonce, domaine, choix, reponse, callback){
 	modele.bonneReponse = reponse;
 	modele.save(function (err) {
 		if (err) console.log('Erreur');
-		console.log('Insertion');
 	});
 	callback();
 };
 
 module.exports.getQuestionById = function(id, callback){
-
 	ModeleQuestion.findOne({_id: id}, function(err, doc){
 		if(err) return;
 		callback(doc);
@@ -34,7 +32,7 @@ module.exports.getQuestionById = function(id, callback){
 };
 
 module.exports.getQuestionAleatoireTest = function(callback){
-	return ModeleQuestion.findOneRandom(function(err, result) {
+	ModeleQuestion.findOneRandom(function(err, result) {
 	if (!err)
 		callback(result);
   	});

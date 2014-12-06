@@ -9,7 +9,7 @@ block content
 				label(ng-repeat="reponse in reponseList" for="{{$index}}")
 					input(type='radio', name='reponse', id="{{$index}}")
 					{{reponse}}
-			input#valider(type='submit', name='valider', ng-click='action()')
+			a#valider(name='valider', ng-click='action()')
 			if examen
 				a#abandonner(href='results') Abandonner
 			else
@@ -18,8 +18,7 @@ block content
 			h1 Note actuelle :
 			p {{note}}/{{nbQuestions}}
 	include footer
-	script(type='text/javascript', src='javascripts/gestionStorage.js')
 	if examen
 		script(type='text/javascript', src='javascripts/examen.js')
 	else
-		script(type='text/javascript', src='javascripts/question.js')
+		script(type='text/javascript', src='javascripts/quicktest.js')

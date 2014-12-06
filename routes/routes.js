@@ -1,5 +1,6 @@
 var express = require('express');
 var questions = require('../models/questions');
+var examens = require('../models/examens')
 var router = express.Router();
 
 /* GET home page. */
@@ -12,6 +13,10 @@ router.get('/index', function(req, res) {
 });
 
 router.get('/dashboard', function(req, res) {
+	if(req.session.noteTests == undefined)
+		req.session.noteTests = 0;
+	if(req.session.nbQuestionsTests == undefined)
+		req.session.nbQuestionsTests = 0;
 	/*affichage des domaines et recherche du nombre max de question par domaine*/
 	var maxQuestion = new Array;
 	questions.getQuestionsDomaine("HTML", function(question1)
@@ -39,6 +44,16 @@ router.post('/examen', function(req, res, next) {
 	var domaines = req.body.domaines;
 	if(typeof domaines == "string") // s'il n'y a qu'un domaine on le mets dans un tableau
 	domaines =[domaines];
+	// on met en forme les domaines
+	var mesDomaines= "";
+	for(i=0; i<domaines.length; i++)
+	{
+		mesDomaines+= domaines[i];
+		if (i != domaines.length - 1)
+			mesDomaines += ", "; // on met à jour la chaine de caractères
+	}
+	console.log(mesDomaines);
+	req.session.domaines = mesDomaines;
 	// creer un tableau avec les id des questions correspondants à sujet
 	var tabQuestions = new Array;
 
@@ -57,16 +72,9 @@ router.get('/examen', function(req, res, next) {
 });
 
 router.all('/examen', function(req,res) {
-	var tabQuestions = JSON.parse(req.session.tabQuestions);
-	// choisir une question au hasard et on la supprime du tableau
-	var idQuestion = questions.getQuestionAleatoireExamen(tabQuestions);
-	// sauvegarder le nouveau tableau
-	req.session.tabQuestions = JSON.stringify(tabQuestions);
-	// récupérer la question
-	var question = questions.getQuestionById(idQuestion, function(question){
-		res.render('questions', { examen: true, titre: 'Examen', nomDomaine: question.domaine, question: question.enonce, reponses: question.reponses, idReponse: question.bonneReponse});
-	}
-	);
+	req.session.noteCourante = 0;
+	req.session.nbQuestionsCourant = 0;
+	res.render('questions', { examen: true, titre: 'Examen'});
 });
 
 router.post('/quicktest', function(req, res, next) {
@@ -79,10 +87,6 @@ router.get('/quicktest', function(req, res, next) {
 
 router.all('/quicktest', function(req,res) {
 	// initialisation des stats des tests
-	if(req.session.noteTests == undefined)
-		req.session.noteTests = 0;
-	if(req.session.nbQuestionsTests == undefined)
-		req.session.nbQuestionsTests = 0;
 	req.session.noteCourante = 0;
 	req.session.nbQuestionsCourant = 0;
 	res.render('questions', { examen: false, titre: 'Test rapide'});
@@ -132,12 +136,28 @@ router.get('/ajouterToutesLesQuestions', function(req,res){
 	res.render('index', {alertes : true});
 });
 
-router.get('/api/getQuestionAleatoire/', function(req,res){
+router.get('/api/getQuestionAleatoireTest/', function(req,res){
 	questions.getQuestionAleatoireTest(function(question){
 		res.json({ 	domaine: question.domaine, 
 					enonce: question.enonce, 
 					reponses: question.reponses,
 					id: question._id 
+			})
+	});
+});
+
+router.get('/api/getQuestionAleatoireExamen/', function(req,res){
+	var tabQuestions = JSON.parse(req.session.tabQuestions);
+	// choisir une question au hasard et on la supprime du tableau
+	var idQuestion = questions.getQuestionAleatoireExamen(tabQuestions);
+	// sauvegarder le nouveau tableau
+	req.session.tabQuestions = JSON.stringify(tabQuestions);
+	// récupérer la question
+	questions.getQuestionById(idQuestion,function(question){
+		res.json({ 	domaine: question.domaine, 
+					enonce: question.enonce, 
+					reponses: question.reponses,
+					id: question._id
 			});
 	});
 });
@@ -148,27 +168,108 @@ router.get('/api/getBonneReponse/:id', function(req,res){
 	});
 });
 
-router.get("/api/getNoteTest/", function(req,res)
-{
+router.get("/api/getNote/", function(req,res){
+	// si on a posé moins de questions que demandé
+	if(req.session.nombreQuestions != req.session.nbQuestionsCourant)
+ 		var etat = false;
+ 	else // si toutes les questions on été posées
+ 		var etat = true;
 	res.json({
 		note: req.session.noteCourante,
-		nbQuestions: req.session.nbQuestionsCourant
+		nbQuestions: req.session.nbQuestionsCourant,
+		examenTermine: etat
 	});
 });
 
-router.get("/api/addBonneReponseTest/", function(req,res)
-{
+router.get("/api/addBonneReponseTest/", function(req,res){
 	req.session.noteCourante ++;
 	req.session.noteTests ++;
-	res.json({data: "resultat"});
+	res.json({});
 });
 
-router.get("/api/addQuestionTest/", function(req,res)
-{
+router.get("/api/addQuestionTest/", function(req,res){
 	req.session.nbQuestionsCourant ++;
 	req.session.nbQuestionsTests ++;
-	res.json({data: "resultat"});
+	res.json({});
 });
 
+router.get("/api/addBonneReponseExamen/", function(req,res){
+	req.session.noteCourante ++;
+	res.json({});
+});
+
+router.get("/api/addQuestionExamen/", function(req,res){
+	req.session.nbQuestionsCourant ++;
+	res.json({});
+});
+
+router.get('/api/ajouteExamen/', function(req,res){
+	console.log("Appel au service d'insertion d'examen");
+	examens.insert(req.session.domaines, req.session.nombreQuestions, function(id){
+		res.json({message: "Ajout d'un examen", id:id});
+	});
+});
+
+router.get('/api/setNoteExamen/:id', function(req,res){
+	console.log("Appel au service d'insertion de note");
+	examens.ajouterNote(req.params.id, req.session.noteCourante, function(exam){
+		res.json({message: "Ajout d'une note"});
+	});
+});
+
+
+router.get('/api/Examens',function(req,res){
+	console.log("Appel au service de récupération d'examen");
+	examens.getAllExamens(function(examens){
+		res.json({examens: examens});
+	});
+});
+
+router.get('/api/StatsExamens',function(req,res){
+	console.log("Appel au service de récupération des stats d'examens");
+	examens.recupererStatsExamens(function(noteTotale, nbExams){
+		if (nbExams == undefined)
+			nbExams = 0;
+		res.json({noteTotale: noteTotale, nbExams: nbExams});
+	});
+});
+
+router.get('/api/StatsTests',function(req,res){
+	console.log("Appel au service de récupération des stats des tests");
+	res.json({	nbTests: req.session.nbQuestionsTests, 
+				resultatsTests: req.session.noteTests});
+});
+
+router.get('/api/LastExamen', function(req,res){
+	console.log("Appel au service de récupération du dernier examen");
+	examens.getLastExamen(function(examen){ 
+		if (examen == undefined)
+		{
+			note = 0;
+			nombreQuestions = 0;
+		}
+		else
+		{
+			note = examen.note;
+			nbQuestions = examen.nombreQuestions;
+		}
+		res.json({ note: note, 
+				nbQuestions: nbQuestions}); 
+	});
+});
+
+router.get('/api/StatsCourantes', function(req,res)
+{
+	res.json({
+		note: req.session.noteCourante,
+		nbQuestions: req.session.nombreQuestions
+	});
+});
+
+router.get('/api/cleanExamens', function(req, res){
+	examens.clean(function(){
+		res.json({});
+	});
+});
 
 module.exports = router;

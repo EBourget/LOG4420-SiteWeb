@@ -1,30 +1,33 @@
+Quiz.controller('ResultsController', function($scope, $http, ModeleResultat){
+	ModeleResultat.statsCourantes($http, function(data)
+	{
+		$scope.note = data.note;
+		$scope.nbQuestions = data.nbQuestions;
+		var note = data.note/data.nbQuestions;
+		if (note <= 0.25) {
+			$scope.message = "C'est nul !";
+		}
+		else if (note <= 0.50) {
+			$scope.message = "C'est pas bien !";
+		}
+		else if (note <= 0.75) {
+			$scope.message = "C'est bien !";
+		}
+		else{
+			$scope.message = "C'est très bien !";
+		}
+	});
+});
 
-$(document).ready(function() {
-	// Affichage de la note
-	$('#note').text(localStorage['nbQuestionsJustes'] + "/" + localStorage['nbQuestions']);
-
-	//Calcul de la moyenne : chaque examen à la même pondération, indépendamment du nombre de questions
-	var moyenneTotale = ((localStorage['moyenneExamens'] * (localStorage['nbExamens'])) + (localStorage['nbQuestionsJustes'] / localStorage['nbQuestions']))/ localStorage['nbExamens']; 
-
-	// Stockage des statistiques
-	var examens = JSON.parse(localStorage['examens']);
-	examens[localStorage['nbExamens']-1].note = localStorage['nbQuestionsJustes']; 
-	localStorage['examens'] = JSON.stringify(examens); // on sauvegarde la nouvelle note
-	localStorage['moyenneExamens'] = moyenneTotale;
-	localStorage['dernierExamen'] = localStorage['nbQuestionsJustes'] + "/" + localStorage['nbQuestions'];
-
-	// Affichage message
-	var note = (localStorage['nbQuestionsJustes'])/(localStorage['nbQuestions']);
-	if (note <= 0.25) {
-		$('#message').text("C'est nul !")
-	}
-	else if (note <= 0.50) {
-		$('#message').text("C'est pas bien !")
-	}
-	else if (note <= 0.75) {
-		$('#message').text("C'est bien !")
-	}
-	else{
-		$('#message').text("C'est très bien !")
+Quiz.service('ModeleResultat', function(){
+	this.statsCourantes = function(service, callback)
+	{
+		var response = service.get('/api/StatsCourantes');
+		response.success(function(data, status, headers, config){
+			callback(data);
+		});
+		response.error(function(data, status, headers, config){
+			alert('Problème avec AJAX');
+		});
 	};
 });
