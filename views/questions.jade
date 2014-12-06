@@ -1,9 +1,9 @@
 extends layout
 
 block content
-	section
-		em#nomDomaine= nomDomaine
-		h1#enonceQuestion= question
+	section(ng-app)
+		em#nomDomaine(ng-controller='question') {{nomDomaine}}
+		h1#enonceQuestion(ng-controller='question') {{question}}
 		if examen
 			form.questionnaire(action='examen', method='get')
 				article#listeChoix
