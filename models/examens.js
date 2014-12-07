@@ -62,7 +62,7 @@ module.exports.recupererStatsExamens = function(callback){
 	});
 };
 
-module.exports.clean = function(callback)
+module.exports.clear = function(callback)
 {
 	ModeleExamen.remove({}, function(err, exams){
 		if(!err)

@@ -53,7 +53,7 @@ block content
 				h1 Détails
 				p Voici l'ensemble des résultats obtenus aux examens : 
 				ul
-					li(ng-repeat="examen in examens") Examen {{$index}} ({{examen.domaine}}) : {{examen.note}}/{{examen.nombreQuestions}}
+					li(ng-repeat="examen in examens") Examen {{$index + 1}} ({{examen.domaine}}) : {{examen.note}}/{{examen.nombreQuestions}}
 			a.retour(href='dashboard')
 	include footer
 	script(type='text/javascript', src='javascripts/statistiques.js')

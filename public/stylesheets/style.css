@@ -263,6 +263,15 @@ a#abandonner:hover{
 	background-color: #cc0033;
 }
 
+/*Styles des bonnes/mauvaises réponses*/
+#listeChoix label.bonneReponse{
+	background-color: rgba(18,147,36,0.7);
+}
+
+#listeChoix label.mauvaiseReponse{
+	background-color: rgba(204,0,0,0.7);
+}
+
 /**************************************************************/
 /* Nouvelles règles si la fenêtre fait au plus 1024px de large */
 /**************************************************************/

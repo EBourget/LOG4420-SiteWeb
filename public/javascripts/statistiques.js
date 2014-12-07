@@ -1,32 +1,39 @@
 Quiz.controller('StatController', function($scope, $http, ModeleStat){
-	ModeleStat.getAllExamens($http, function(data1)
+	var actualiseStats = function()
 	{
-		$scope.examens = data1.examens;
-		ModeleStat.statsExamens($http, function(data2)
+		ModeleStat.getAllExamens($http, function(data1)
 		{
-			$scope.nombreExamens = data2.nbExams;
-			if(data2.nbExams != 0)
-				$scope.moyenneExamens = ((data2.noteTotale/data2.nbQuestions)*20).toFixed(1);
-			else
-				$scope.moyenneExamens = 0;
-			ModeleStat.statsTests($http, function(data3)
+			$scope.examens = data1.examens;
+			ModeleStat.statsExamens($http, function(data2)
 			{
-				if(data3.nbTests != 0)
-					$scope.pourcentageTestsReussis = ((data3.resultatsTests/data3.nbTests)*100).toFixed(1);
+				$scope.nombreExamens = data2.nbExams;
+				if(data2.nbQuestions != 0)
+					$scope.moyenneExamens = ((data2.noteTotale/data2.nbQuestions)*20).toFixed(1);
 				else
-					$scope.pourcentageTestsReussis = 0.0;
-				ModeleStat.lastExamen($http, function(data4)
+					$scope.moyenneExamens = 0;
+				ModeleStat.statsTests($http, function(data3)
 				{
-					$scope.noteDernierExamen = data4.note;
-					$scope.nbQuestionsExamen = data4.nbQuestions;
+					if(data3.nbTests != 0)
+						$scope.pourcentageTestsReussis = ((data3.resultatsTests/data3.nbTests)*100).toFixed(1);
+					else
+						$scope.pourcentageTestsReussis = 0.0;
+					ModeleStat.lastExamen($http, function(data4)
+					{
+						$scope.noteDernierExamen = data4.note;
+						$scope.nbQuestionsExamen = data4.nbQuestions;
+					});
 				});
 			});
 		});
-	});
+	};
+
+	actualiseStats();
 
 	$scope.clear = function()
 	{
-		ModeleStat.clean($http, function(){});
+		ModeleStat.clear($http, function(){
+			actualiseStats();
+		});
 	};
 });
 
@@ -71,13 +78,14 @@ Quiz.service('ModeleStat', function(){
 			alert('Problème avec AJAX');
 		});
 	};
-	this.clean = function(service, callback)
+	this.clear = function(service, callback)
 	{
-		var response = service.get('/api/cleanExamens');
+		var response = service.get('/api/clearExamens');
 		response.success(function(data, status, headers, config){
 			callback(data);
 		});
 		response.error(function(data, status, headers, config){
+			console.log("service echec");
 			alert('Problème avec AJAX');
 		});
 	};

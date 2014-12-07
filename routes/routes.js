@@ -228,7 +228,10 @@ router.get('/api/StatsExamens',function(req,res){
 	console.log("Appel au service de récupération des stats d'examens");
 	examens.recupererStatsExamens(function(noteTotale, nbExams, nbQuestions){
 		if (nbExams == undefined)
+		{
 			nbExams = 0;
+			nbQuestions = 0;
+		}
 		res.json({noteTotale: noteTotale, nbExams: nbExams, nbQuestions: nbQuestions});
 	});
 });
@@ -257,8 +260,10 @@ router.get('/api/LastExamen', function(req,res){
 	});
 });
 
-router.get('/api/cleanExamens', function(req, res){
-	examens.clean(function(){
+router.get('/api/clearExamens', function(req, res){
+	req.session.noteTests = 0;
+	req.session.nbQuestionsTests = 0;
+	examens.clear(function(){
 		res.json({});
 	});
 });

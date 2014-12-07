@@ -17,6 +17,13 @@ Quiz.controller('QuestionController', function($scope, $http, AjouterModel){
 			$scope.domaine = data.domaine;
 			$scope.enonce = data.enonce;
 			$scope.reponseList = data.reponses;
+			// on réinitialise la présentation
+			var reponses = $("input[type='radio']");
+			for(i = 0; i< reponses.length; i++)
+			{
+				$(reponses[i]).parent().removeClass('bonneReponse mauvaiseReponse');
+				$(reponses[i]).attr('checked',false);
+			}
 			id = data.id;
 		});
 	}
@@ -33,11 +40,11 @@ Quiz.controller('QuestionController', function($scope, $http, AjouterModel){
 				{
 					if(parseInt($(reponses[i]).attr('id')) == idReponse)
 					{
-						$(reponses[i]).parent().css('background-color', 'rgba(18,147,36,0.7)');
+						$(reponses[i]).parent().addClass('bonneReponse'); 
 						estCorrect = $(reponses[i]).is(':checked');
 					}
 					else
-						$(reponses[i]).parent().css('background-color', 'rgba(204,0,0,0.7)');
+						$(reponses[i]).parent().addClass('mauvaiseReponse');
 				}
 				if(estCorrect)
 					AjouterModel.addBonneReponseTest($http, function(){
